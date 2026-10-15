@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &5258301307140419975
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 62.706
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.904
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -65.407
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3729519742767793570, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6132168753975995894, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      propertyPath: m_Name
+      value: S_Redstone Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6132168753975995894, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8510178463618395728}
+    - targetCorrespondingSourceObject: {fileID: 6132168753975995894, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6838720086122151158}
+  m_SourcePrefab: {fileID: 100100000, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+--- !u!1 &2152979901096828017 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6132168753975995894, guid: c5a0a0ce73ff82448831fd0b15dbd682, type: 3}
+  m_PrefabInstance: {fileID: 5258301307140419975}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-8510178463618395728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2152979901096828017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 379e087238a7523408a7f8336523d56a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OreHealth
+  oreType: 0
+  size: 0
+  currentHealth: 0
+--- !u!65 &-6838720086122151158
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2152979901096828017}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.72989, y: 4.5413346, z: 3.2897568}
+  m_Center: {x: -0.23937905, y: 1.8452418, z: -0.4453109}
