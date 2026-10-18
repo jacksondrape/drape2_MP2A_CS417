@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e89f610e7ab4afb448cc35ebfd453ed5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 238654
+  packageName: VTDumpster
+  packageVersion: 1.0
+  assetPath: Assets/DuksGames/VTDumpster/URP/Demo/Materials/Seamless_URP.mat
+  uploadId: 548527

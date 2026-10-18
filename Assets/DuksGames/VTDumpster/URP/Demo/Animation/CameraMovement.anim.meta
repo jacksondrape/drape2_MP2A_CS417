@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1f2c3c49b4b9a9141bbf08f4b2f422a9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 238654
+  packageName: VTDumpster
+  packageVersion: 1.0
+  assetPath: Assets/DuksGames/VTDumpster/URP/Demo/Animation/CameraMovement.anim
+  uploadId: 548527
