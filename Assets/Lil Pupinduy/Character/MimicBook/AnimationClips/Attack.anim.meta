@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3483ae2c0b957324b922d4e9c83f7792
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291598
+  packageName: The Dungeon Rat
+  packageVersion: 1.0
+  assetPath: Assets/Lil Pupinduy/Character/MimicBook/AnimationClips/Attack.anim
+  uploadId: 680909

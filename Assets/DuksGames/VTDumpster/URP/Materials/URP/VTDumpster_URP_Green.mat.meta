@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 351a41893f4b7294fb3c2698c09d014c
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 238654
+  packageName: VTDumpster
+  packageVersion: 1.0
+  assetPath: Assets/DuksGames/VTDumpster/URP/Materials/URP/VTDumpster_URP_Green.mat
+  uploadId: 548527

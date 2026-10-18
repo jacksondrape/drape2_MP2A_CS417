@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: aa621c6d65a18fc4caaa3cc4c6409bd5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 238654
+  packageName: VTDumpster
+  packageVersion: 1.0
+  assetPath: Assets/DuksGames/VTDumpster/URP/Materials/URP/VTDumpster_URP_RedA.mat
+  uploadId: 548527
