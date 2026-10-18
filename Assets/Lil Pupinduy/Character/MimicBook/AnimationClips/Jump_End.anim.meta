@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fbe29194156e9664c9d3bc4f3207a285
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291598
+  packageName: The Dungeon Rat
+  packageVersion: 1.0
+  assetPath: Assets/Lil Pupinduy/Character/MimicBook/AnimationClips/Jump_End.anim
+  uploadId: 680909

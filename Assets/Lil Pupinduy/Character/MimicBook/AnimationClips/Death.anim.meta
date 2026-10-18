@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 867fbe0ca3b4e894d96980e947bd070b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291598
+  packageName: The Dungeon Rat
+  packageVersion: 1.0
+  assetPath: Assets/Lil Pupinduy/Character/MimicBook/AnimationClips/Death.anim
+  uploadId: 680909

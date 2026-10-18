@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ed9fa5bb47a5f0c48917257de8b14c40
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 291598
+  packageName: The Dungeon Rat
+  packageVersion: 1.0
+  assetPath: Assets/Lil Pupinduy/Character/MimicBook/Scripts/UniversalRenderPipelineAsset.asset
+  uploadId: 680909

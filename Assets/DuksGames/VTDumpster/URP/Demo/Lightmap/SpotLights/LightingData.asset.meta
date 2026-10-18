@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e8b9f7572cd5a6c4c948e66a9b272a0e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 238654
+  packageName: VTDumpster
+  packageVersion: 1.0
+  assetPath: Assets/DuksGames/VTDumpster/URP/Demo/Lightmap/SpotLights/LightingData.asset
+  uploadId: 548527
