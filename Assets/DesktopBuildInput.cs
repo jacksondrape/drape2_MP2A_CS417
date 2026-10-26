@@ -216,7 +216,7 @@ public class DesktopBuildInput : MonoBehaviour
             messageUntil = Time.unscaledTime + 3f;
         }
         int cost = hoveredSlot != null ? hoveredSlot.buildCost : 20;
-        instructions.text = "<b>" + (selectedTower + 1) + "  " + tower + "</b>  |  " + cost + " SCRAP";
+        instructions.text = "<b>" + (selectedTower + 1) + "  " + tower + "</b>  |  " + cost + " GOLD";
         if (hoveredSlot != null && hoveredSlot.builtTower != null)
         {
             instructions.text += "\nE Upgrade   Right Sell +" + hoveredSlot.sellRefund;

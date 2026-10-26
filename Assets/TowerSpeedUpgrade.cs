@@ -49,7 +49,7 @@ public class TowerSpeedUpgrade : MonoBehaviour
             statusLabel.text += "\n<color=#BDEEFF>SPEED +" + ((shooting.cooling.speedMultiplier - 1f) * 100f).ToString("0") + "%</color>";
         if (shooting.damageBoost != null && shooting.damageBoost.Multiplier > 1f)
             statusLabel.text += "\n<color=#FFD580>DMG x" + shooting.damageBoost.Multiplier.ToString("0.00") + "  " + shooting.damageBoost.Remaining.ToString("0.0") + "s</color>";
-        statusLabel.text += upgradeLevel < maxUpgrades ? "\nE Upgrade · " + NextCost + " SCRAP" : "\nMAX LEVEL";
+        statusLabel.text += upgradeLevel < maxUpgrades ? "\nE Upgrade · " + NextCost + " GOLD" : "\nMAX LEVEL";
         if (tutorialTime > 0f) statusLabel.text += "\nUpgrade: more damage, faster shots.";
 
     }
@@ -62,7 +62,7 @@ public class TowerSpeedUpgrade : MonoBehaviour
             return "This tower is fully upgraded.";
         int cost = NextCost;
         if (!resources.TrySpendGold(cost))
-            return "Not enough SCRAP. Need " + cost + ".";
+            return "Not enough GOLD. Need " + cost + ".";
 
         shooting.fireInterval *= fireIntervalMultiplier;
         shooting.bonusDamage += damagePerUpgrade;
@@ -77,6 +77,6 @@ public class TowerSpeedUpgrade : MonoBehaviour
             upgradePanel.SetPropertyBlock(colors);
         }
 
-        return "Machine upgraded to level " + upgradeLevel + ". -" + cost + " SCRAP.";
+        return "Machine upgraded to level " + upgradeLevel + ". -" + cost + " GOLD.";
     }
 }

@@ -5,18 +5,21 @@ public class WristInventoryUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text inventoryText;
 
-    private void OnEnable()
-    {
-        if (InventoryManager.Instance != null)
-            InventoryManager.Instance.InventoryChanged += Refresh;
+    private InventoryManager inventory;
 
+    private void Update()
+    {
+        if (inventory == InventoryManager.Instance) return;
+        if (inventory != null) inventory.InventoryChanged -= Refresh;
+        inventory = InventoryManager.Instance;
+        if (inventory != null) inventory.InventoryChanged += Refresh;
         Refresh();
     }
 
     private void OnDisable()
     {
-        if (InventoryManager.Instance != null)
-            InventoryManager.Instance.InventoryChanged -= Refresh;
+        if (inventory != null) inventory.InventoryChanged -= Refresh;
+        inventory = null;
     }
 
     private void Refresh()

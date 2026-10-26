@@ -68,7 +68,7 @@ public class DamageAmplifier : MonoBehaviour
     {
         if (level >= maxLevel) return "Amplifier at maximum level.";
         int cost = upgradeCost * (level + 1);
-        if (resources == null || !resources.TrySpendGold(cost)) return "Need " + cost + " SCRAP.";
+        if (resources == null || !resources.TrySpendGold(cost)) return "Need " + cost + " GOLD.";
         level++;
         damageMultiplier += 0.25f;
         return "Amplifier upgraded: damage x" + damageMultiplier.ToString("0.00") + ".";
@@ -118,7 +118,7 @@ public class DamageAmplifier : MonoBehaviour
             + (activeSeconds > 0f ? "\n<color=#FFD580>BOOST " + activeSeconds.ToString("0.0") + "s</color>"
                 : connectedTowers == 0 ? "\nWaiting for nearby towers"
                 : "\nCHARGE " + charge.ToString("0.0") + " / " + RequiredChargeSeconds.ToString("0") + "s")
-            + (level < maxLevel ? "\nE Upgrade · " + upgradeCost * (level + 1) + " SCRAP" : "\nMAX LEVEL");
+            + (level < maxLevel ? "\nE Upgrade · " + upgradeCost * (level + 1) + " GOLD" : "\nMAX LEVEL");
         if (tutorialTime > 0f) label.text += "\nMore towers: slower charge. Strongest boost only.";
 
     }

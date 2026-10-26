@@ -53,7 +53,7 @@ public class CoolingFan : MonoBehaviour
     {
         if (level >= maxLevel) return "Fan at maximum level.";
         int cost = upgradeCost * (level + 1);
-        if (resources == null || !resources.TrySpendGold(cost)) return "Need " + cost + " SCRAP.";
+        if (resources == null || !resources.TrySpendGold(cost)) return "Need " + cost + " GOLD.";
         level++;
         speedMultiplier += 0.1f;
         return "Fan upgraded: +" + ((speedMultiplier - 1f) * 100f).ToString("0") + "% attack speed.";
@@ -83,7 +83,7 @@ public class CoolingFan : MonoBehaviour
         if (cameraView != null) label.transform.rotation = cameraView.transform.rotation;
         label.text = "<b>FAN  " + level + "/" + maxLevel + "</b>"
             + "\nSPEED +" + ((speedMultiplier - 1f) * 100f).ToString("0") + "%  |  " + suppliedTowers + " towers";
-        label.text += level < maxLevel ? "\nE Upgrade · " + upgradeCost * (level + 1) + " SCRAP" : "\nMAX LEVEL";
+        label.text += level < maxLevel ? "\nE Upgrade · " + upgradeCost * (level + 1) + " GOLD" : "\nMAX LEVEL";
         if (tutorialTime > 0f) label.text += "\nBoosts nearby attackers. Strongest fan only.";
 
     }

@@ -26,7 +26,7 @@ public class TowerBuildSlot : MonoBehaviour
         if (resources == null || buildPoint == null || towerPrefabs == null
             || towerType < 0 || towerType >= towerPrefabs.Length || towerPrefabs[towerType] == null)
             return "Slot references are missing.";
-        if (resources.gold < buildCost) return "Not enough scrap. Need " + buildCost + ".";
+        if (resources.gold < buildCost) return "Not enough gold. Need " + buildCost + ".";
         return null;
     }
 
@@ -51,7 +51,7 @@ public class TowerBuildSlot : MonoBehaviour
             || towerType < 0 || towerType >= towerPrefabs.Length || towerPrefabs[towerType] == null)
             return "Slot references are missing.";
         if (!resources.TrySpendGold(buildCost))
-            return "Not enough scrap. Need " + buildCost + ".";
+            return "Not enough gold. Need " + buildCost + ".";
 
         builtTower = Instantiate(towerPrefabs[towerType], buildPoint.position, buildPoint.rotation);
         builtTower.enemies = enemies;
@@ -84,7 +84,7 @@ public class TowerBuildSlot : MonoBehaviour
         if (obstacle != null) obstacle.resources = resources;
         TowerRangeIndicator range = builtTower.GetComponent<TowerRangeIndicator>();
         if (range != null && restrictTowerType) range.showRange = false;
-        return "Machine built. -" + buildCost + " SCRAP.";
+        return "Machine built. -" + buildCost + " GOLD.";
     }
 
     public string Sell()
@@ -98,6 +98,6 @@ public class TowerBuildSlot : MonoBehaviour
         Destroy(soldTower);
         builtTower = null;
         resources.AddGold(sellRefund);
-        return "Machine removed. +" + sellRefund + " SCRAP.";
+        return "Machine removed. +" + sellRefund + " GOLD.";
     }
 }

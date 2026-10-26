@@ -98,9 +98,9 @@ public class PurchasedTowerGrab : XRGrabInteractable
                 int level = GetLevel();
                 vrStatus.text = (shelf != null ? shelf.towerName : "MACHINE") + "  LV " + level + "/2"
                     + StatsText()
-                    + (!purchased ? "\nGRAB TO BUY: " + (shelf != null ? shelf.price : 20) + " SCRAP"
-                        : placedSlot == null ? "\nRelease on a free ground cell" : level < 2 ? "\nHAMMER: " + (15 * (level + 1)) + " SCRAP" : "\nMAX LEVEL")
-                    + (purchased ? "\nMove free · Bin refund 10 SCRAP" : "")
+                    + (!purchased ? "\nGRAB TO BUY: " + (shelf != null ? shelf.price : 20) + " GOLD"
+                        : placedSlot == null ? "\nRelease on a free ground cell" : level < 2 ? "\nHAMMER: " + (15 * (level + 1)) + " GOLD" : "\nMAX LEVEL")
+                    + (purchased ? "\nMove free · Bin refund 10 GOLD" : "")
                     + (tutorial ? "\n<color=#BDEEFF>" + TutorialText() + "</color>" : "");
             }
         }

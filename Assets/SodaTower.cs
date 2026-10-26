@@ -78,10 +78,10 @@ public class SodaTower : MonoBehaviour
     {
         if (level >= maxLevel) return "Soda sprayer at max level.";
         int cost = upgradeCost * (level + 1);
-        if (resources == null || !resources.TrySpendGold(cost)) return "Need " + cost + " SCRAP.";
+        if (resources == null || !resources.TrySpendGold(cost)) return "Need " + cost + " GOLD.";
         level++;
         damagePerSecond += damagePerUpgrade;
-        return "Soda DPS: " + damagePerSecond + ". -" + cost + " SCRAP.";
+        return "Soda DPS: " + damagePerSecond + ". -" + cost + " GOLD.";
     }
 
     public void SetHovered(bool value, DesktopBuildInput input)
@@ -110,7 +110,7 @@ public class SodaTower : MonoBehaviour
         if (cooling != null && cooling.speedMultiplier > 1f) label.text += "\n<color=#BDEEFF>SPEED BOOST</color>";
         if (damageBoost != null && damageBoost.Multiplier > 1f)
             label.text += "\n<color=#FFD580>DMG x" + damageBoost.Multiplier.ToString("0.00") + "  " + damageBoost.Remaining.ToString("0.0") + "s</color>";
-        label.text += level < maxLevel ? "\nE Upgrade · " + upgradeCost * (level + 1) + " SCRAP" : "\nMAX LEVEL";
+        label.text += level < maxLevel ? "\nE Upgrade · " + upgradeCost * (level + 1) + " GOLD" : "\nMAX LEVEL";
         if (tutorialTime > 0f) label.text += "\nSprays all rats in the forward cone.";
 
     }

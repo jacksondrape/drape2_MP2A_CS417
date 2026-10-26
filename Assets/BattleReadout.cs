@@ -33,7 +33,7 @@ public class BattleReadout : MonoBehaviour
         else if (waveController == null && buildInput != null && !buildInput.battleStarted)
             status = "BUILD YOUR DEFENSES";
 
-        display.text = "<b>" + status + "</b>\nSCRAP  " + resources.gold
+        display.text = "<b>" + status + "</b>\nGOLD  " + resources.gold
             + "     BASE  " + baseHealth.lives + "     RATS  " + remaining;
     }
 }
