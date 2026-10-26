@@ -1,16 +1,20 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerResources : MonoBehaviour
 {
-    [Tooltip("Scrap currency. The field name is retained to preserve existing scene references.")]
-    public int gold = 0;
+    public EconomyManager sharedEconomy;
+    [FormerlySerializedAs("gold")]
+    [SerializeField] private int startingGold;
+    public int gold => sharedEconomy != null ? sharedEconomy.Gold : startingGold;
 
     public bool TrySpendGold(int amount)
     {
         if (amount < 0 || gold < amount)
             return false;
+        if (sharedEconomy != null) return sharedEconomy.TrySpend(amount);
 
-        gold -= amount;
+        startingGold -= amount;
         return true;
     }
 
@@ -21,7 +25,8 @@ public class PlayerResources : MonoBehaviour
             return;
         }
 
-        gold += amount;
-        Debug.Log("Scrap: " + gold, this);
+        if (sharedEconomy != null) sharedEconomy.AddGold(amount);
+        else startingGold += amount;
+        Debug.Log("Gold: " + gold, this);
     }
 }

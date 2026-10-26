@@ -21,7 +21,7 @@ public class TowerDisplayShelf : MonoBehaviour
             sample.resources = resources;
         }
         if (label != null && resources != null)
-            label.text = towerName + "\nGRAB: " + price + " SCRAP\nBALANCE " + resources.gold
-                + (resources.gold < price ? "\n<color=#FF8888>NOT ENOUGH SCRAP</color>" : "\nGrab to buy · Release on a green cell");
+            label.text = towerName + "\nGRAB: " + price + " GOLD\nBALANCE " + resources.gold
+                + (resources.gold < price ? "\n<color=#FF8888>NOT ENOUGH GOLD</color>" : "\nGrab to buy · Release on a green cell");
     }
 }

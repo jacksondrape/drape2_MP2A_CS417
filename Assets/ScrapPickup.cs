@@ -35,7 +35,7 @@ public class ScrapPickup : MonoBehaviour
     {
         if (hint == null || input == null || input.scrapTutorialShown) return;
         input.scrapTutorialShown = true;
-        hint.text = "DROPPED SCRAP\nLeft click: collect\n+" + scrapAmount + " SCRAP";
+        hint.text = "DROPPED GOLD\nLeft click: collect\n+" + scrapAmount + " GOLD";
         hint.gameObject.SetActive(true);
         hintTime = 7f;
     }
@@ -59,7 +59,7 @@ public class ScrapPickup : MonoBehaviour
         if (cell != null && cell.scrapPickup == this) cell.scrapPickup = null;
         gameObject.SetActive(false);
         Destroy(gameObject);
-        return "Recycled can: +" + scrapAmount + " SCRAP.";
+        return "Recycled can: +" + scrapAmount + " GOLD.";
     }
 
     private void OnDestroy()

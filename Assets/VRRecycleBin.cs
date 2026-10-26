@@ -18,7 +18,7 @@ public class VRRecycleBin : MonoBehaviour
             return;
         }
         PurchasedTowerGrab tower = other.GetComponentInParent<PurchasedTowerGrab>();
-        if (tower != null && tower.Recycle()) Show("RECYCLED MACHINE\n+10 SCRAP");
+        if (tower != null && tower.Recycle()) Show("RECYCLED MACHINE\n+10 GOLD");
     }
 
     private void Show(string text)
@@ -31,6 +31,6 @@ public class VRRecycleBin : MonoBehaviour
     {
         if (label != null && Camera.main != null) label.transform.rotation = Camera.main.transform.rotation;
         if (label != null && Time.unscaledTime >= messageUntil)
-            label.text = "RECYCLE\nRelease scrap or purchased machines inside\nMachines: +10 SCRAP";
+            label.text = "RECYCLE\nRelease scrap or purchased machines inside\nMachines: +10 GOLD";
     }
 }
