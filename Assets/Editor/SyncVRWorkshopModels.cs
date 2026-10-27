@@ -7,16 +7,7 @@ using UnityEngine.SceneManagement;
 public static class SyncVRWorkshopModels
 {
     private const string Marker = "VRModelSyncOctober15";
-    [InitializeOnLoadMethod]
-    private static void Queue() { EditorApplication.update += WhenReady; }
-    private static void WhenReady()
-    {
-        if (EditorApplication.isCompiling || EditorApplication.isUpdating || EditorApplication.isPlayingOrWillChangePlaymode) return;
-        EditorApplication.update -= WhenReady;
-        Scene scene = SceneManager.GetSceneByPath("Assets/Scenes/RoomScaleDefense.unity");
-        if (scene.isLoaded && !scene.GetRootGameObjects().Any(r => r.name == Marker)) Sync();
-    }
-
+    // Run setup explicitly from Tools; never modify scenes or prefabs on script reload.
     [MenuItem("Tools/MP2a/Sync Tower Models To VR Displays")]
     public static void Sync()
     {

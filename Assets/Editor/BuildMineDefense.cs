@@ -9,6 +9,148 @@ using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 public static class BuildMineDefense
 {
+ [MenuItem("Tools/MP2B/Restore Missing Cave Geometry %&u")]
+ public static void RestoreCaveGeometry()
+ {
+  if(EditorApplication.isPlayingOrWillChangePlaymode)return;
+  var scene=SceneManager.GetActiveScene();
+  if(scene.path!="Assets/Scenes/MineDefense.unity")return;
+  var mine=scene.GetRootGameObjects().Single(r=>r.name=="Drape_Cave").transform.Find("MinePlayspace");
+  var source=EditorSceneManager.OpenScene("Assets/Scenes/GameScene.unity",OpenSceneMode.Additive);
+  var original=source.GetRootGameObjects().Single(r=>r.name=="MinePlayspace").transform;
+  SceneManager.SetActiveScene(scene);
+  var restored=new System.Collections.Generic.List<string>();
+  try
+  {
+   foreach(Transform child in original)
+   {
+    if(mine.Find(child.name)!=null)continue;
+    if(child.GetComponent<Renderer>()==null)continue;
+    var copy=Object.Instantiate(child.gameObject,mine,false);copy.name=child.name;
+    Undo.RegisterCreatedObjectUndo(copy,"Restore cave geometry");restored.Add(child.name);
+   }
+  }
+  finally{EditorSceneManager.CloseScene(source,true);}
+  EditorSceneManager.MarkSceneDirty(scene);
+  InspectConnection();
+  System.IO.File.WriteAllLines("RestoredCaveGeometry.txt",restored);
+  Debug.Log("Restored cave pieces: "+restored.Count+". Not yet saved; checking connection first.");
+ }
+ [MenuItem("Tools/MP2B/Align Room and Cave %&j")]
+ public static void AlignConnection()
+ {
+  if(EditorApplication.isPlayingOrWillChangePlaymode)return;
+  var scene=SceneManager.GetActiveScene();
+  if(scene.path!="Assets/Scenes/MineDefense.unity")throw new System.InvalidOperationException("Open MineDefense first.");
+  System.IO.Directory.CreateDirectory("SceneBackups");
+  System.IO.File.Copy(scene.path,"SceneBackups/MineDefense-before-alignment-"+System.DateTime.Now.ToString("yyyyMMdd-HHmmss")+".unity");
+  var room=scene.GetRootGameObjects().Single(r=>r.name=="Billy_DefenseRoom").transform;
+  var passage=scene.GetRootGameObjects().Single(r=>r.name=="ConnectingPassage").transform;
+  Undo.RecordObject(room,"Align defense room");
+  room.position=new Vector3(78f,.08f,-37.8f);
+  var parts=room.GetComponentsInChildren<Transform>(true);
+  for(int i=0;i<2;i++)
+  {
+   var wall=parts.Single(t=>t.name=="EntranceWall_"+i);
+   Undo.RecordObject(wall,"Align doorway");
+   wall.localPosition=new Vector3(i==0?-5.5f:5.5f,wall.localPosition.y,wall.localPosition.z);
+   wall.localScale=new Vector3(9f,wall.localScale.y,wall.localScale.z);
+  }
+  var mat=parts.Single(t=>t.name=="Floor").GetComponent<Renderer>().sharedMaterial;
+  ConnectionBlock("PassageFloor",passage,new Vector3(64f,-.02f,-53.8125f),new Vector3(2f,.2f,1.625f),mat);
+  ConnectionBlock("PassageLeft",passage,new Vector3(62.85f,1.58f,-52.7375f),new Vector3(.3f,3.2f,3.775f),mat);
+  ConnectionBlock("PassageRight",passage,new Vector3(65.15f,1.58f,-53.8125f),new Vector3(.3f,3.2f,1.625f),mat);
+  ConnectionBlock("PassageCeiling",passage,new Vector3(64f,3.23f,-53.8125f),new Vector3(2.6f,.2f,1.625f),mat);
+  ConnectionBlock("CrossFloor",passage,new Vector3(71f,-.02f,-52f),new Vector3(16f,.2f,2f),mat);
+  ConnectionBlock("CrossCeiling",passage,new Vector3(71f,3.23f,-52f),new Vector3(16.6f,.2f,2f),mat);
+  ConnectionBlock("CrossSouth",passage,new Vector3(72.15f,1.58f,-53.15f),new Vector3(14.3f,3.2f,.3f),mat);
+  ConnectionBlock("CrossNorth",passage,new Vector3(69.85f,1.58f,-50.85f),new Vector3(14.3f,3.2f,.3f),mat);
+  ConnectionBlock("RoomLegFloor",passage,new Vector3(78f,-.02f,-47.3875f),new Vector3(2f,.2f,7.225f),mat);
+  ConnectionBlock("RoomLegCeiling",passage,new Vector3(78f,3.23f,-47.3875f),new Vector3(2.6f,.2f,7.225f),mat);
+  ConnectionBlock("RoomLegLeft",passage,new Vector3(76.85f,1.58f,-47.3875f),new Vector3(.3f,3.2f,7.225f),mat);
+  ConnectionBlock("RoomLegRight",passage,new Vector3(79.15f,1.58f,-48.3875f),new Vector3(.3f,3.2f,9.225f),mat);
+  // Close the sides of the old wide cave opening, leaving the aligned passage free.
+  ConnectionBlock("CaveDoorLeft",passage,new Vector3(62.8f,1.65f,-54.25f),new Vector3(.4f,3.3f,.5f),mat);
+  ConnectionBlock("CaveDoorRight",passage,new Vector3(66.8f,1.65f,-54.25f),new Vector3(3.6f,3.3f,.5f),mat);
+  ConnectionBlock("CaveDoorHeader",passage,new Vector3(65.6f,3.75f,-54.25f),new Vector3(6f,1.25f,.5f),mat);
+  ConnectionBlock("RoomDoorHeader",passage,new Vector3(78f,5f,-43.82f),new Vector3(2f,3.76f,.15f),mat);
+  var lights=new[]{new Vector3(64,2.7f,-52),new Vector3(68,2.7f,-52),new Vector3(73,2.7f,-52),new Vector3(78,2.7f,-51),new Vector3(78,2.7f,-46)};
+  for(int i=0;i<lights.Length;i++)
+  {
+   string name="PassageLight_"+i;var lamp=passage.Find(name);
+   if(lamp==null){lamp=new GameObject(name).transform;lamp.SetParent(passage);lamp.gameObject.AddComponent<Light>();Undo.RegisterCreatedObjectUndo(lamp.gameObject,"Light passage");}
+   lamp.position=lights[i];
+   var light=lamp.GetComponent<Light>();light.type=LightType.Point;light.color=new Color(1f,.77f,.48f);light.range=6f;light.intensity=2f;
+  }
+  passage.Find("MineDirection").position=new Vector3(78f,2.7f,-43.6f);
+  passage.Find("RoomDirection").position=new Vector3(64f,2.7f,-54.6f);
+  foreach(var label in passage.GetComponentsInChildren<TMP_Text>()) {label.fontSize=1f;label.rectTransform.sizeDelta=new Vector2(1.9f,.6f);}
+  Physics.SyncTransforms();
+  var results=new System.Collections.Generic.List<string>();
+  var route=new System.Collections.Generic.List<Vector3>();
+  for(float lane=-.6f;lane<=.61f;lane+=.6f)
+  {
+   for(float z=-55;z<=-52;z+=.25f)route.Add(new Vector3(64+lane,0,z));
+   for(float x=64;x<=78;x+=.25f)route.Add(new Vector3(x,0,-52+lane));
+   for(float z=-52;z<=-43;z+=.25f)route.Add(new Vector3(78+lane,0,z));
+  }
+  foreach(var point in route)
+  {
+   float x=point.x,z=point.z;
+   foreach(var c in Physics.OverlapCapsule(new Vector3(x,.5f,z),new Vector3(x,1.8f,z),.25f,~0,QueryTriggerInteraction.Ignore))
+    if(!(c is CharacterController))results.Add("BLOCKED "+c.name+" "+x+", "+z);
+   if(!Physics.Raycast(new Vector3(x,.4f,z),Vector3.down,.6f,~0,QueryTriggerInteraction.Ignore))results.Add("FLOOR GAP "+x+", "+z);
+  }
+  System.IO.File.WriteAllLines("ConnectionValidation.txt",results.Count==0?new[]{"PASS: "+route.Count+" floor and capsule samples across three lanes."}:results.ToArray());
+  EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
+  SceneView.lastActiveSceneView.LookAt(new Vector3(64f,1.6f,-48f),Quaternion.Euler(15f,180f,0f),9f);
+  Debug.Log("Connection aligned. Validation issues: "+results.Count);
+ }
+ [MenuItem("Tools/MP2B/Preview Connection %&k")]
+ public static void PreviewConnection()
+ {
+  if(EditorApplication.isPlayingOrWillChangePlaymode)return;
+  var go=new GameObject("TemporaryConnectionCamera");var camera=go.AddComponent<Camera>();
+  var rt=new RenderTexture(1000,700,24);camera.targetTexture=rt;camera.fieldOfView=70f;
+  var old=RenderTexture.active;
+  try
+  {
+   for(int i=0;i<4;i++)
+   {
+    go.transform.position=new Vector3(i==0?78f:64f,1.7f,i==0?-41f:-57f);
+    go.transform.rotation=Quaternion.Euler(0,i==0?180f:0f,0);
+    if(i==2){go.transform.position=new Vector3(56.6f,1.7f,-53f);go.transform.rotation=Quaternion.identity;}
+    if(i==3){go.transform.position=new Vector3(61f,1.8f,-48f);go.transform.rotation=Quaternion.Euler(0,90,0);}
+    camera.Render();RenderTexture.active=rt;var texture=new Texture2D(1000,700,TextureFormat.RGB24,false);
+    texture.ReadPixels(new Rect(0,0,1000,700),0,0);texture.Apply();
+    System.IO.File.WriteAllBytes("ConnectionView"+i+".png",texture.EncodeToPNG());Object.DestroyImmediate(texture);
+   }
+  }
+  finally{RenderTexture.active=old;camera.targetTexture=null;Object.DestroyImmediate(rt);Object.DestroyImmediate(go);}
+ }
+ private static void ConnectionBlock(string name,Transform parent,Vector3 position,Vector3 size,Material material)
+ {
+  var t=parent.Find(name);
+  if(t==null){Block(name,parent,position,size,material);Undo.RegisterCreatedObjectUndo(parent.Find(name).gameObject,"Build passage");}
+  else {Undo.RecordObject(t,"Align passage");t.position=position;t.localScale=size;}
+ }
+ [MenuItem("Tools/MP2B/Inspect Current Connection %&i")]
+ public static void InspectConnection()
+ {
+  if(EditorApplication.isPlayingOrWillChangePlaymode)return;
+  var scene=SceneManager.GetActiveScene();
+  var lines=new System.Collections.Generic.List<string>();
+  foreach(var t in scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)))
+  {
+   var r=t.GetComponent<Renderer>();var c=t.GetComponent<Collider>();
+   if(r==null && c==null && t.parent!=null)continue;
+   string path=t.name;for(var p=t.parent;p!=null;p=p.parent)path=p.name+"/"+path;
+   lines.Add(path+" | active="+t.gameObject.activeInHierarchy+" pos="+t.position.ToString("F3")+" scale="+t.lossyScale.ToString("F3")
+     +(r!=null?" bounds="+r.bounds.ToString("F3"):"")+(c!=null?" collider="+c.bounds.ToString("F3"):""));
+  }
+  System.IO.File.WriteAllLines("ConnectionInspection.txt",lines);
+  Debug.Log("Connection inspection saved.");
+ }
  public static void Inspect()
  {
   var scene=EditorSceneManager.OpenScene("Assets/Scenes/GameScene.unity");

@@ -1,0 +1,16 @@
+Cave_Pillar_A (4)
+Tunnel_A
+Tunnel_Corner_B
+Tunnel_Corner_B (1)
+Wall_Caves_A (70)
+Wall_Caves_A (73)
+Wall_Caves_A (71)
+Wall_Caves_A (74)
+Wall_Caves_A (1)
+Wall_Caves_B (33)
+Wall_Caves_Corner (1)
+Wall_Caves_D (1)
+Wall_Mines_C
+Wall_Mines_Corner
+Wall_Mines_D
+Wall_Mines_Tunnel_Mid

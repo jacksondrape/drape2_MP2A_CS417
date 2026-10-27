@@ -1,0 +1,1 @@
+PASS: 321 floor and capsule samples across three lanes.

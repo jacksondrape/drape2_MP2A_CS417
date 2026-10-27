@@ -8,15 +8,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public static class SetupVRWallWorkshop
 {
-    [InitializeOnLoadMethod]
-    private static void Queue() { EditorApplication.update += WhenReady; }
-    private static void WhenReady()
-    {
-        if (EditorApplication.isCompiling || EditorApplication.isUpdating || EditorApplication.isPlayingOrWillChangePlaymode) return;
-        EditorApplication.update -= WhenReady;
-        Setup();
-    }
-
+    // Run setup explicitly from Tools; never modify scenes or prefabs on script reload.
     [MenuItem("Tools/MP2a/Setup VR Wall Workshop")]
     public static void Setup()
     {

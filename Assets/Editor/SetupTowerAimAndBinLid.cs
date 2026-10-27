@@ -6,15 +6,7 @@ using UnityEngine.SceneManagement;
 
 public static class SetupTowerAimAndBinLid
 {
-    [InitializeOnLoadMethod]
-    private static void Queue() { EditorApplication.update += WhenReady; }
-    private static void WhenReady()
-    {
-        if (EditorApplication.isCompiling || EditorApplication.isUpdating || EditorApplication.isPlayingOrWillChangePlaymode) return;
-        EditorApplication.update -= WhenReady;
-        Setup();
-    }
-
+    // Run setup explicitly from Tools; never modify scenes or prefabs on script reload.
     [MenuItem("Tools/MP2a/Setup Tower Aim and Automatic Bin Lid")]
     public static void Setup()
     {
