@@ -6117,7 +6117,8 @@ MonoBehaviour:
     fire source.
 
 
-    Use toolboxes to unlock new areas with higher tier ores. '
+    Use toolboxes to unlock new areas with higher tier ores (some
+    areas may require multiple toolboxes to unlock). '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9807,15 +9808,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6724362203338090894, guid: 8c8201fb32fb36846808e2d843840574, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 59.333
+      value: 59.509
       objectReference: {fileID: 0}
     - target: {fileID: 6724362203338090894, guid: 8c8201fb32fb36846808e2d843840574, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.325
+      value: 0.436
       objectReference: {fileID: 0}
     - target: {fileID: 6724362203338090894, guid: 8c8201fb32fb36846808e2d843840574, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -56.975
+      value: -56.814
       objectReference: {fileID: 0}
     - target: {fileID: 6724362203338090894, guid: 8c8201fb32fb36846808e2d843840574, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9994,7 +9995,7 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
-  purchaseCost: 50
+  purchaseCost: 100
   placementZones:
   - {fileID: 1866615673}
   - {fileID: 322461417}
@@ -10824,6 +10825,7 @@ MonoBehaviour:
   originalObject: {fileID: 2029377859}
   replacementPrefab: {fileID: 7599482480375654313, guid: f80739f4c73163141822e6d0123aeba0, type: 3}
   replacementSpawnPoint: {fileID: 318582405}
+  requiredPlacements: 3
 --- !u!65 &322461418
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -40326,7 +40328,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1370554969}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40334,7 +40336,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -60, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1370554971
@@ -40357,7 +40359,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Price: 50 gold'
+  m_text: 'Price: 100 gold'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -55125,6 +55127,7 @@ MonoBehaviour:
   originalObject: {fileID: 2139430878}
   replacementPrefab: {fileID: 2430388868182622070, guid: 5cef04c4743c8e746b097a3d49593987, type: 3}
   replacementSpawnPoint: {fileID: 1150601809}
+  requiredPlacements: 1
 --- !u!65 &1866615674
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57410,7 +57413,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Place toolbox here
+  m_text: 'Place toolbox here
+
+    (Cost: 3)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
