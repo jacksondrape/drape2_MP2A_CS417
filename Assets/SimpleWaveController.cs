@@ -18,6 +18,7 @@ public class SimpleWaveController : MonoBehaviour
 
     public int currentWave = -1;
     public bool waveActive;
+    [System.NonSerialized] public int clearedWaves;
     public bool CombatActive => waveActive && baseHealth != null && baseHealth.lives > 0;
 
     private readonly List<EnemyHealth> activeEnemies = new List<EnemyHealth>();
@@ -64,6 +65,7 @@ public class SimpleWaveController : MonoBehaviour
         {
             waveActive = false;
             resources.AddGold(waveBonus);
+            clearedWaves++;
 
             if (currentWave >= enemyCounts.Length - 1)
                 finished = true;

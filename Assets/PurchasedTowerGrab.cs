@@ -26,6 +26,8 @@ public class PurchasedTowerGrab : XRGrabInteractable
     private CoolingFan fan;
     private DamageAmplifier amplifier;
     private float tutorialUntil;
+    private float placementErrorUntil;
+    private string placementError;
 
     protected override void OnHoverEntered(HoverEnterEventArgs args)
     {
@@ -91,7 +93,8 @@ public class PurchasedTowerGrab : XRGrabInteractable
         if (vrStatus != null)
         {
             bool tutorial = Time.unscaledTime < tutorialUntil;
-            vrStatus.gameObject.SetActive(isHovered || isSelected || tutorial);
+            bool showPlacementError = Time.unscaledTime < placementErrorUntil;
+            vrStatus.gameObject.SetActive(isHovered || isSelected || tutorial || showPlacementError);
             if (vrStatus.gameObject.activeSelf)
             {
                 if (Camera.main != null) vrStatus.transform.rotation = Camera.main.transform.rotation;
@@ -102,6 +105,7 @@ public class PurchasedTowerGrab : XRGrabInteractable
                         : placedSlot == null ? "\nRelease on a free ground cell" : level < 2 ? "\nHAMMER: " + (15 * (level + 1)) + " GOLD" : "\nMAX LEVEL")
                     + (purchased ? "\nMove free · Bin refund 10 GOLD" : "")
                     + (tutorial ? "\n<color=#BDEEFF>" + TutorialText() + "</color>" : "");
+                if (showPlacementError) vrStatus.text += "\n<color=#FFD580>" + placementError + "</color>";
             }
         }
         if (!isSelected) return;
@@ -167,6 +171,7 @@ public class PurchasedTowerGrab : XRGrabInteractable
         TowerBuildSlot slot = NearestCell();
         if (CanPlace(slot))
         {
+            placementErrorUntil = 0f;
             transform.SetPositionAndRotation(slot.buildPoint.position, Quaternion.Euler(0f, transform.eulerAngles.y, 0f));
             body.isKinematic = true;
             body.useGravity = false;
@@ -179,6 +184,10 @@ public class PurchasedTowerGrab : XRGrabInteractable
         }
         else
         {
+            placementError = slot == null ? "NO CELL BELOW: release closer to a green ground cell."
+                : slot.builtTower != null ? "CELL OCCUPIED: move this machine to an empty green cell."
+                : "KEEP THE ROUTE CLEAR: use a green ground cell away from the path and entrances.";
+            placementErrorUntil = Time.unscaledTime + 5f;
             body.isKinematic = false;
             body.useGravity = true;
         }
@@ -230,6 +239,11 @@ public class PurchasedTowerGrab : XRGrabInteractable
     public string HammerUpgrade()
     {
         if (!purchased || isSelected || placedSlot == null) return "Place the machine before upgrading.";
+        if (GetLevel() >= 2) return "MAX LEVEL: this machine cannot improve further.\nUse the hammer on another placed machine.";
+        int cost = 15 * (GetLevel() + 1);
+        if (resources != null && resources.gold < cost)
+            return "UPGRADE NEEDS " + cost + " GOLD; you have " + resources.gold
+                + ".\nMine and sell ore, then strike again.";
         TowerSpeedUpgrade upgrade = GetComponent<TowerSpeedUpgrade>();
         if (upgrade != null) return upgrade.Upgrade();
         if (soda != null) return soda.Upgrade();
