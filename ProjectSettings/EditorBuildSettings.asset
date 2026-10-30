@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/GameScene.unity
+    guid: 40029ab39469f7444ae16e93368f80d1
   - enabled: 1
     path: Assets/Scenes/MineDefense.unity
     guid: 51efa66d6d1b5b547987313fbdb51bd9
