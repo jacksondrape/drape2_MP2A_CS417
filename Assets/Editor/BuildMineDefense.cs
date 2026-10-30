@@ -9,6 +9,112 @@ using UnityEngine.XR.Interaction.Toolkit;
 using TMPro;
 public static class BuildMineDefense
 {
+ [MenuItem("Tools/MP2B/Complete Progression Setup %&h")]
+ public static void CompleteProgressionSetup()
+ {
+  if(EditorApplication.isPlayingOrWillChangePlaymode)return;
+  var scene=SceneManager.GetActiveScene();
+  if(scene.path!="Assets/Scenes/MineDefense.unity")return;
+  var all=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
+  var progress=all.Select(t=>t.GetComponent<CaveDefenseProgression>()).Single(p=>p!=null);
+  var shelves=all.Select(t=>t.GetComponent<TowerDisplayShelf>()).Where(s=>s!=null).ToArray();
+  progress.sodaShelf=shelves.Single(s=>s.towerName=="SODA SPRAYER");
+  progress.fanShelf=shelves.Single(s=>s.towerName=="COOLING FAN");
+  progress.amplifierShelf=shelves.Single(s=>s.towerName=="AMPLIFIER");
+  progress.sellStation=all.Select(t=>t.GetComponent<SellStation>()).Single(s=>s!=null);
+  if(progress.revealDisplay==null)
+   progress.revealDisplay=FeedbackLabel("WorkshopIntroduction",progress.transform,Vector3.zero,Quaternion.identity,1.25f);
+  progress.revealDisplay.fontSize=1.3f;
+  progress.revealDisplay.gameObject.SetActive(false);
+  if(progress.sellStation.feedbackLabel==null)
+   progress.sellStation.feedbackLabel=FeedbackLabel("SellFeedback",progress.transform,progress.sellStation.transform.position+Vector3.up*1.7f,Quaternion.identity,2f);
+  progress.sellStation.feedbackLabel.text="ORE EXCHANGE\nSelect the cart to sell your collected ore.";
+  var room=scene.GetRootGameObjects().Single(r=>r.name=="Billy_DefenseRoom").transform;
+  if(progress.traderTrophy==null)
+   progress.traderTrophy=ExtraTrophy(progress.firstBuildTrophy,progress.transform,room.TransformPoint(new Vector3(-9.3f,1.1f,0f)),"ORE TRADER");
+  if(progress.engineerTrophy==null)
+   progress.engineerTrophy=ExtraTrophy(progress.firstBuildTrophy,progress.transform,room.TransformPoint(new Vector3(-9.3f,1.1f,1f)),"ENGINEER");
+  foreach(var label in progress.objectiveDisplays)label.rectTransform.sizeDelta=new Vector2(3.5f,2.3f);
+  EditorUtility.SetDirty(progress);EditorUtility.SetDirty(progress.sellStation);
+  EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
+  Debug.Log("PROGRESSION COMPLETE: five thresholds, five reveals, five trophies, five error lessons configured.");
+ }
+ private static GameObject ExtraTrophy(GameObject source,Transform parent,Vector3 position,string title)
+ {
+  var trophy=Object.Instantiate(source,parent);trophy.name=title;trophy.transform.position=position;
+  trophy.GetComponentInChildren<TMP_Text>(true).text=title;trophy.SetActive(false);
+  Undo.RegisterCreatedObjectUndo(trophy,"Add achievement trophy");return trophy;
+ }
+ [MenuItem("Tools/MP2B/Setup Progress Feedback %&g")]
+ public static void SetupProgressFeedback()
+ {
+  if(EditorApplication.isPlayingOrWillChangePlaymode)return;
+  var scene=SceneManager.GetActiveScene();
+  if(scene.path!="Assets/Scenes/MineDefense.unity")return;
+  if(scene.GetRootGameObjects().Any(r=>r.name=="ProgressFeedback"))throw new System.InvalidOperationException("Feedback already exists; edit its Inspector references instead.");
+  var all=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<Transform>(true)).ToArray();
+  var zones=all.Select(t=>t.GetComponent<ToolboxPlacementZone>()).Where(z=>z!=null).ToArray();
+  var root=new GameObject("ProgressFeedback");Undo.RegisterCreatedObjectUndo(root,"Add progression feedback");
+  var progress=root.AddComponent<CaveDefenseProgression>();
+  progress.zoneA=zones.Single(z=>z.name=="PlacementZoneA");progress.zoneB=zones.Single(z=>z.name=="PlacementZoneB");
+  progress.zoneB.previousZone=progress.zoneA;
+  foreach(var zone in zones)
+  {
+   zone.routeName=zone==progress.zoneA?"MINING ROUTE A":"MINING ROUTE B";
+   zone.unlockIntroduction=zone==progress.zoneA
+    ?"<b>MINING ROUTE A UNLOCKED</b>\nYour toolbox rebuilds the entrance.\nA new section of the mine opens for exploration."
+    :"<b>MINING ROUTE B UNLOCKED</b>\nThree toolboxes complete the passage.\nExplore deeper into the mine and gather ore to fund defenses.";
+   zone.progressLabel=FeedbackLabel(zone.name+"_Progress",root.transform,zone.transform.position+Vector3.up*1.8f,Quaternion.identity,2.3f);
+   zone.progressLabel.gameObject.SetActive(zone==progress.zoneA);
+   EditorUtility.SetDirty(zone);
+  }
+  progress.waves=all.Select(t=>t.GetComponent<SimpleWaveController>()).Single(w=>w!=null);
+  progress.buildSlots=all.Select(t=>t.GetComponent<TowerBuildSlot>()).Where(s=>s!=null).ToArray();
+  var room=scene.GetRootGameObjects().Single(r=>r.name=="Billy_DefenseRoom").transform;
+  var board=FeedbackLabel("NextObjective",root.transform,room.TransformPoint(new Vector3(-9.5f,2.6f,3f)),Quaternion.Euler(0,-90,0),3.5f);
+  board.text="MINE & DEFEND\nNEXT: Buy a toolbox and open mining route A.";
+  progress.objectiveDisplays=new[]{board};
+  var trophies=new GameObject[3];string[] names={"FIRST BUILD","FIRST DEFENSE","MINE EXPLORER"};
+  Material material=AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/BaseGreen.mat");
+  for(int i=0;i<3;i++)
+  {
+   var trophy=new GameObject(names[i]);trophy.transform.SetParent(root.transform);trophy.transform.position=room.TransformPoint(new Vector3(-9.3f,1.1f,2f+i));
+   Block("Plinth",trophy.transform,trophy.transform.position,new Vector3(.3f,.15f,.3f),material);
+   var gem=GameObject.CreatePrimitive(PrimitiveType.Sphere);gem.name="Award";gem.transform.SetParent(trophy.transform,false);gem.transform.localPosition=Vector3.up*.3f;gem.transform.localScale=Vector3.one*.3f;
+   gem.GetComponent<Renderer>().sharedMaterial=material;Object.DestroyImmediate(gem.GetComponent<Collider>());
+   var label=FeedbackLabel("AwardName",trophy.transform,trophy.transform.position+Vector3.up*.65f,Quaternion.Euler(0,-90,0),.9f);label.text=names[i];label.fontSize=1.2f;
+   trophy.SetActive(false);trophies[i]=trophy;
+  }
+  progress.firstBuildTrophy=trophies[0];progress.firstWaveTrophy=trophies[1];progress.explorerTrophy=trophies[2];
+  EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
+  Debug.Log("PROGRESSION READY: 2 counters/reveals, sequential goal, 3 trophies; references assigned.");
+ }
+ private static TMP_Text FeedbackLabel(string name,Transform parent,Vector3 position,Quaternion rotation,float width)
+ {
+  var label=new GameObject(name).AddComponent<TextMeshPro>();label.transform.SetParent(parent);label.transform.SetPositionAndRotation(position,rotation);
+  label.rectTransform.sizeDelta=new Vector2(width,1.4f);label.fontSize=2f;label.alignment=TextAlignmentOptions.Center;
+  return label;
+ }
+ [MenuItem("Tools/MP2B/Configure Toolbox Requirements %&y")]
+ public static void ConfigureToolboxes()
+ {
+  if(EditorApplication.isPlayingOrWillChangePlaymode)return;
+  var scene=SceneManager.GetActiveScene();
+  if(scene.path!="Assets/Scenes/MineDefense.unity")throw new System.InvalidOperationException("Open MineDefense first.");
+  var zones=scene.GetRootGameObjects().SelectMany(r=>r.GetComponentsInChildren<ToolboxPlacementZone>(true)).ToArray();
+  foreach(string name in new[]{"PlacementZoneA","PlacementZoneB"})
+  {
+   var zone=zones.Single(z=>z.name==name);
+   Undo.RecordObject(zone,"Set toolbox requirement");
+   var data=new SerializedObject(zone);
+   data.FindProperty("requiredPlacements").intValue=name=="PlacementZoneA"?1:3;
+   data.ApplyModifiedProperties();
+   if(data.FindProperty("originalObject").objectReferenceValue==null || data.FindProperty("replacementPrefab").objectReferenceValue==null)
+    throw new System.InvalidOperationException(name+" has missing pathway references.");
+   Debug.Log(name+" requires "+zone.RequiredPlacements+" toolbox placements.");
+  }
+  EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);
+ }
  [MenuItem("Tools/MP2B/Restore Missing Cave Geometry %&u")]
  public static void RestoreCaveGeometry()
  {

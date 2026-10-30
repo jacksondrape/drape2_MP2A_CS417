@@ -1,0 +1,1 @@
+PASS: progression checks completed in Play mode. Wave milestones and toolbox overlap/purchase were simulated; XR controller inputs were not tested.
