@@ -23,10 +23,16 @@ public class ToolboxPurchase : UnityEngine.XR.Interaction.Toolkit.Interactables.
         originalParent = transform.parent;
     }
 
-    protected override void OnSelectEntering(SelectEnterEventArgs args)
+    public override bool IsSelectableBy(UnityEngine.XR.Interaction.Toolkit.Interactors.IXRSelectInteractor interactor)
     {
-        if (IsConsumed)
-            return;
+        return !IsConsumed && base.IsSelectableBy(interactor)
+            && (IsPurchased || (EconomyManager.Instance != null
+                && EconomyManager.Instance.Gold >= purchaseCost));
+    }
+
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    {
+        base.OnSelectEntered(args);
 
         if (!IsPurchased)
         {
@@ -34,14 +40,13 @@ public class ToolboxPurchase : UnityEngine.XR.Interaction.Toolkit.Interactables.
                 !EconomyManager.Instance.TrySpend(purchaseCost))
             {
                 Debug.Log("Not enough gold to purchase the toolbox.");
+                interactionManager.SelectExit(args.interactorObject, this);
                 return;
             }
 
             IsPurchased = true;
             Debug.Log("Toolbox purchased.");
         }
-
-        base.OnSelectEntering(args);
     }
 
     protected override void OnSelectExited(SelectExitEventArgs args)
