@@ -5,9 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GameScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    guid: 40029ab39469f7444ae16e93368f80d1
+  - enabled: 1
+    path: Assets/Scenes/MineDefense.unity
+    guid: 51efa66d6d1b5b547987313fbdb51bd9
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 69cfbff785471a146902edae2199e71f, type: 2}
