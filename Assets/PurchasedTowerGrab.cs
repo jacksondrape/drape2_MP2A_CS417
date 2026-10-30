@@ -102,7 +102,7 @@ public class PurchasedTowerGrab : XRGrabInteractable
                 vrStatus.text = (shelf != null ? shelf.towerName : "MACHINE") + "  LV " + level + "/2"
                     + StatsText()
                     + (!purchased ? "\nGRAB TO BUY: " + (shelf != null ? shelf.price : 20) + " GOLD"
-                        : placedSlot == null ? "\nRelease on a free ground cell" : level < 2 ? "\nHAMMER: " + (15 * (level + 1)) + " GOLD" : "\nMAX LEVEL")
+                        : placedSlot == null ? "\nRelease on a free ground cell" : level < 2 ? "\nHAMMER: " + NextUpgradeCost + " GOLD" : "\nMAX LEVEL")
                     + (purchased ? "\nMove free · Bin refund 10 GOLD" : "")
                     + (tutorial ? "\n<color=#BDEEFF>" + TutorialText() + "</color>" : "");
                 if (showPlacementError) vrStatus.text += "\n<color=#FFD580>" + placementError + "</color>";
@@ -236,11 +236,24 @@ public class PurchasedTowerGrab : XRGrabInteractable
         return upgrade != null ? upgrade.upgradeLevel : soda != null ? soda.level : fan != null ? fan.level : amplifier != null ? amplifier.level : 0;
     }
 
+    public int NextUpgradeCost
+    {
+        get
+        {
+            TowerSpeedUpgrade upgrade = GetComponent<TowerSpeedUpgrade>();
+            if (upgrade != null) return upgrade.NextCost;
+            if (soda != null) return soda.upgradeCost * (soda.level + 1);
+            if (fan != null) return fan.upgradeCost * (fan.level + 1);
+            if (amplifier != null) return amplifier.upgradeCost * (amplifier.level + 1);
+            return 0;
+        }
+    }
+
     public string HammerUpgrade()
     {
         if (!purchased || isSelected || placedSlot == null) return "Place the machine before upgrading.";
         if (GetLevel() >= 2) return "MAX LEVEL: this machine cannot improve further.\nUse the hammer on another placed machine.";
-        int cost = 15 * (GetLevel() + 1);
+        int cost = NextUpgradeCost;
         if (resources != null && resources.gold < cost)
             return "UPGRADE NEEDS " + cost + " GOLD; you have " + resources.gold
                 + ".\nMine and sell ore, then strike again.";

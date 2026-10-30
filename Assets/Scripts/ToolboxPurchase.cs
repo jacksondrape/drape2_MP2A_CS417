@@ -8,6 +8,7 @@ public class ToolboxPurchase : UnityEngine.XR.Interaction.Toolkit.Interactables.
 
     public bool IsPurchased { get; private set; }
     public bool IsConsumed { get; private set; }
+    public int PurchaseCost => purchaseCost;
 
     private Vector3 originalPosition;
     private Quaternion originalRotation;

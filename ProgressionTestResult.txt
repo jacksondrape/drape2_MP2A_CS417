@@ -1,1 +1,1 @@
-PASS: progression checks completed in Play mode. Wave milestones and toolbox overlap/purchase were simulated; XR controller inputs were not tested.
+PASS: mining/selling guide switch, hide/show, wave-4 B gate with unconsumed rejection, three toolboxes, exact upgrade charges, and existing progression checks. Wave milestones and toolbox overlap/purchase were simulated; XR controller inputs were not tested.

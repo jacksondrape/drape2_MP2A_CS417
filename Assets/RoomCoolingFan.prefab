@@ -411,7 +411,7 @@ MonoBehaviour:
   speedMultiplier: 1.25
   level: 0
   maxLevel: 2
-  upgradeCost: 15
+  upgradeCost: 120
 --- !u!114 &3343889348573321017
 MonoBehaviour:
   m_ObjectHideFlags: 0

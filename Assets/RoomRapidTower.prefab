@@ -182,7 +182,7 @@ MonoBehaviour:
   resources: {fileID: 0}
   buildSlot: {fileID: 0}
   upgradePanel: {fileID: 2581348775689631613}
-  upgradeCost: 15
+  upgradeCost: 120
   maxUpgrades: 2
   fireIntervalMultiplier: 0.8
   upgradeLevel: 0

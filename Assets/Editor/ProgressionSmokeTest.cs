@@ -40,6 +40,15 @@ public static class ProgressionSmokeTest
             "All trophies must start hidden.");
         p.sellStation.SellInventory();
         Require(p.sellStation.feedbackLabel.text.Contains("NOTHING TO SELL"), "Empty sale explanation.");
+        yield return new WaitForSecondsRealtime(.3f);
+        Require(p.CurrentGuideTarget == p.starterMine && p.guide.line.enabled, "Start with a visible mining trail.");
+        InventoryManager.Instance.AddOre(OreType.Redstone, 20);
+        yield return new WaitForSecondsRealtime(.3f);
+        Require(p.CurrentGuideTarget == p.sellStation.transform, "Enough carried ore redirects to selling.");
+        p.guide.ToggleTrail();
+        yield return new WaitForSecondsRealtime(.3f);
+        Require(!p.guide.line.enabled && !p.guideLabel.gameObject.activeSelf, "Guide can be hidden.");
+        p.guide.ToggleTrail();
 
         var toolbox = Object.FindFirstObjectByType<ToolboxPurchase>();
         PrepareToolbox(p.zoneB, toolbox);
@@ -77,6 +86,12 @@ public static class ProgressionSmokeTest
         Require(p.zoneA.TryConsume(toolbox) && !p.zoneA.IsUnlocked, "A introduction precedes opening.");
         yield return new WaitForSecondsRealtime(p.zoneA.revealSeconds + .2f);
         Require(p.zoneA.IsUnlocked && p.objectiveDisplays[0].text.Contains("route B"), "A opens and reveals B goal.");
+        PrepareToolbox(p.zoneB, toolbox);
+        Require(!p.zoneB.TryConsume(toolbox) && !toolbox.IsConsumed && p.zoneB.CurrentPlacements == 0,
+            "B must reject at three cleared waves without consuming or counting the toolbox.");
+        yield return new WaitForSecondsRealtime(.3f);
+        Require(p.zoneB.progressLabel.text.Contains("3/4"), "B explains the missing fourth wave.");
+        p.waves.clearedWaves = 4;
         for (int i = 1; i <= 3; i++)
         {
             PrepareToolbox(p.zoneB, toolbox);
@@ -86,6 +101,7 @@ public static class ProgressionSmokeTest
         }
         yield return new WaitForSecondsRealtime(p.zoneB.revealSeconds + .2f);
         Require(p.zoneB.IsUnlocked && p.explorerTrophy.activeSelf, "B opens and explorer trophy appears.");
+        CaveGuidanceSetup.CheckOpenRoutes(p);
 
         var slot = p.buildSlots[0];
         TowerDisplayShelf shelf = null;
@@ -102,12 +118,17 @@ public static class ProgressionSmokeTest
         if (upgrade != null) upgrade.resources = shelf.resources;
         EconomyManager.Instance.TrySpend(EconomyManager.Instance.Gold);
         Require(tower.HammerUpgrade().Contains("Mine and sell"), "Insufficient upgrade Gold explanation.");
-        EconomyManager.Instance.AddGold(100);
+        EconomyManager.Instance.AddGold(1000);
+        int beforeUpgrade = EconomyManager.Instance.Gold;
+        int quotedCost = tower.NextUpgradeCost;
+        Require(quotedCost >= 120, "Increased first upgrade price is loaded from the prefab.");
         tower.HammerUpgrade();
+        Require(beforeUpgrade - EconomyManager.Instance.Gold == quotedCost, "Hammer charge matches quoted price.");
         yield return null;
         yield return null;
         Require(p.firstBuildTrophy.activeSelf && p.engineerTrophy.activeSelf, "Build and upgrade trophies.");
         tower.HammerUpgrade();
+        Require(beforeUpgrade - EconomyManager.Instance.Gold == quotedCost * 3, "Second upgrade costs twice the first.");
         Require(tower.HammerUpgrade().Contains("MAX LEVEL"), "Maximum upgrade explanation.");
         var second = Object.Instantiate(shelf.towerPrefab, slot.buildPoint.position, Quaternion.identity);
         second.GetComponent<Rigidbody>().isKinematic = true;
@@ -117,6 +138,6 @@ public static class ProgressionSmokeTest
         yield return new WaitForSecondsRealtime(.2f);
         Require(second.placedSlot == null && second.vrStatus.text.Contains("CELL OCCUPIED"), "Occupied cell lesson.");
         Debug.Log("PROGRESSION TEST PASSED: five thresholds/reveals, five trophies, five errors, shared ore-sale income. Milestones simulated; physical XR inputs still need testing.");
-        System.IO.File.WriteAllText("ProgressionTestResult.txt", "PASS: progression checks completed in Play mode. Wave milestones and toolbox overlap/purchase were simulated; XR controller inputs were not tested.");
+        System.IO.File.WriteAllText("ProgressionTestResult.txt", "PASS: mining/selling guide switch, hide/show, wave-4 B gate with unconsumed rejection, three toolboxes, exact upgrade charges, and existing progression checks. Wave milestones and toolbox overlap/purchase were simulated; XR controller inputs were not tested.");
     }
 }

@@ -14752,7 +14752,7 @@ MonoBehaviour:
   damageBoost: {fileID: 1098612688325351918}
   level: 0
   maxLevel: 2
-  upgradeCost: 15
+  upgradeCost: 160
 --- !u!114 &932361975808234705
 MonoBehaviour:
   m_ObjectHideFlags: 0

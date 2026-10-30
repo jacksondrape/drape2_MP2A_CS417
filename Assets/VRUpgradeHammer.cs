@@ -47,6 +47,6 @@ public class VRUpgradeHammer : MonoBehaviour
         if (label == null) return;
         label.gameObject.SetActive(grab != null && grab.isSelected);
         if (Camera.main != null) label.transform.rotation = Camera.main.transform.rotation;
-        if (Time.unscaledTime >= messageUntil) label.text = "UPGRADE HAMMER\nStrike a placed machine\n15 / 30 GOLD";
+        if (Time.unscaledTime >= messageUntil) label.text = "UPGRADE HAMMER\nStrike a placed machine\nHover the machine to check its upgrade price";
     }
 }

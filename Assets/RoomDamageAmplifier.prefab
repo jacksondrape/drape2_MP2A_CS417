@@ -5499,7 +5499,7 @@ MonoBehaviour:
   activeSeconds: 0
   level: 0
   maxLevel: 2
-  upgradeCost: 15
+  upgradeCost: 180
 --- !u!65 &463338992237462637
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -14,6 +14,8 @@ public class ToolboxPlacementZone : MonoBehaviour
     [Header("Placement Requirements")]
     [SerializeField, Min(1)] private int requiredPlacements = 1;
     public ToolboxPlacementZone previousZone;
+    public SimpleWaveController waves;
+    [Min(0)] public int requiredClearedWaves;
     public TMP_Text progressLabel;
     public string routeName = "Mining route";
     [TextArea] public string unlockIntroduction;
@@ -25,18 +27,19 @@ public class ToolboxPlacementZone : MonoBehaviour
     {
         if (progressLabel == null) return;
         bool available = previousZone == null || previousZone.IsUnlocked;
-        bool showError = Time.unscaledTime < errorUntil;
+        bool showError = Time.unscaledTime < errorUntil && !RequirementsMet;
         progressLabel.gameObject.SetActive(available || showError);
         if (showError)
         {
             if (Camera.main != null) progressLabel.transform.rotation = Camera.main.transform.rotation;
-            progressLabel.text = "ENTRANCE NOT READY\nComplete the first toolbox entrance (A),\nthen bring your purchased toolbox back here.";
+            progressLabel.text = "ENTRANCE NOT READY\n" + RequirementMessage + "\nYour toolbox has not been consumed.";
             return;
         }
         if (!available) return;
         if (Camera.main != null) progressLabel.transform.rotation = Camera.main.transform.rotation;
         progressLabel.text = revealing ? unlockIntroduction
             : isUnlocked ? routeName + "\nOPEN - explore the new passage"
+            : !RequirementsMet ? routeName + "\n" + RequirementMessage
             : routeName + "\nToolboxes delivered: " + currentPlacements + "/" + requiredPlacements
                 + "\nBuy at the shop, then release here.";
     }
@@ -49,6 +52,12 @@ public class ToolboxPlacementZone : MonoBehaviour
     public int CurrentPlacements => currentPlacements;
     public int RequiredPlacements => requiredPlacements;
     public bool IsUnlocked => isUnlocked;
+    public bool RequirementsMet => (previousZone == null || previousZone.IsUnlocked)
+        && (requiredClearedWaves == 0 || (waves != null && waves.clearedWaves >= requiredClearedWaves));
+    private string RequirementMessage => previousZone != null && !previousZone.IsUnlocked
+        ? "Open entrance A first, then return here."
+        : "Clear " + requiredClearedWaves + " defense waves first ("
+            + (waves != null ? waves.clearedWaves : 0) + "/" + requiredClearedWaves + ").";
 
     private void Awake()
     {
@@ -81,7 +90,7 @@ public class ToolboxPlacementZone : MonoBehaviour
         if (!toolbox.IsPurchased || toolbox.IsConsumed)
             return false;
 
-        if (previousZone != null && !previousZone.IsUnlocked)
+        if (!RequirementsMet)
         {
             errorUntil = Time.unscaledTime + 5f;
             return false;
